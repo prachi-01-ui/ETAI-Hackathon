@@ -26,3 +26,4 @@ uvicorn==0.51.0
 GeoAlchemy2
 numpy
 xgboost
+scikit-learn
