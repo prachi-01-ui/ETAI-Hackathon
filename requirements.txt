@@ -28,3 +28,4 @@ numpy
 xgboost
 scikit-learn
 langgraph
+google-genai
