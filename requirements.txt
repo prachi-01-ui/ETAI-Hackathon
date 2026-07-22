@@ -27,3 +27,4 @@ GeoAlchemy2
 numpy
 xgboost
 scikit-learn
+faiss-cpu
