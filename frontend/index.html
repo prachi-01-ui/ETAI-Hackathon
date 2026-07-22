@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="AI Risk Intelligence Agent – Real-time geopolitical risk monitoring for India's energy supply chain."/>
+  <title>AI Risk Intelligence Agent | Energy Supply Chain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- TOP HEADER -->
+<header class="top-header">
+  <div class="header-left">
+    <div class="logo-icon">
+      <svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" stroke="#00D4FF" stroke-width="1.5" fill="none"/><polygon points="16,4 20,12 16,10 12,12" fill="#00D4FF"/><circle cx="16" cy="16" r="3" fill="#00D4FF" opacity="0.9"/><ellipse cx="16" cy="16" rx="9" ry="4" stroke="#00D4FF" stroke-width="0.6" fill="none" opacity="0.4"/></svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-title">AI Risk Intelligence Agent</span>
+      <span class="logo-sub">Energy Supply Chain Resilience Platform</span>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="search-bar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5a7a9a" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="global-search" placeholder="Search events, corridors, suppliers, ports…"/>
+      <span class="kbd">⌘K</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill"><span class="pulse-dot"></span>Online</div>
+    <div class="last-updated" id="last-updated">Updating…</div>
+    <div class="icon-btn" id="notif-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="notif-badge">5</span>
+    </div>
+    <div class="avatar">IB</div>
+  </div>
+</header>
+
+<div class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item" data-s="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item active" data-s="risk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>AI Risk Intelligence</span>
+        <span class="nav-badge">3</span>
+      </a>
+      <a href="#" class="nav-item" data-s="twin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span>Digital Twin</span>
+      </a>
+      <a href="#" class="nav-item" data-s="sim">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Scenario Simulator</span>
+      </a>
+      <a href="#" class="nav-item" data-s="proc">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span>Procurement</span>
+      </a>
+      <a href="#" class="nav-item" data-s="spr">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span>Strategic Reserve</span>
+      </a>
+      <a href="#" class="nav-item" data-s="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Reports</span>
+      </a>
+      <a href="#" class="nav-item" data-s="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span>Settings</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="model-tag">AI Engine v3.2</div>
+      <div class="model-sub">Geopolitical Risk Model</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+<!-- DASHBOARD PAGE -->
+<section id="dashboard-page" class="page-section hidden-page">
+
+  <div class="panel">
+
+    <div class="panel-hdr">
+      <span class="panel-title">Command Dashboard</span>
+      <span class="tag teal">LIVE INTELLIGENCE</span>
+    </div>
+
+    <div id="dashboard-content">
+
+  <!-- AGENT ACTION CENTER -->
+  <div class="agent-action-center">
+
+    <div class="agent-center-header">
+      <div>
+        <h2>Agent Action Center</h2>
+        <p>Autonomous decision execution and measurable operational outcomes</p>
+      </div>
+
+      <span class="tag teal">AGENTIC AI</span>
+    </div>
+
+
+    <!-- AGENT METRICS -->
+<div class="agent-kpi-grid">
+
+  <div class="agent-kpi-card">
+    <span class="agent-kpi-label">Total Decisions</span>
+    <strong id="agent-total-decisions" class="agent-kpi-value">--</strong>
+    <span class="agent-kpi-subtitle">Autonomous Actions</span>
+  </div>
+
+  <div class="agent-kpi-card">
+    <span class="agent-kpi-label">Executed</span>
+    <strong id="agent-executed-decisions" class="agent-kpi-value">--</strong>
+    <span class="agent-kpi-subtitle">Completed Actions</span>
+  </div>
+
+  <div class="agent-kpi-card">
+    <span class="agent-kpi-label">Pending</span>
+    <strong id="agent-pending-decisions" class="agent-kpi-value">--</strong>
+    <span class="agent-kpi-subtitle">Awaiting Execution</span>
+  </div>
+
+  <div class="agent-kpi-card">
+    <span class="agent-kpi-label">Success Rate</span>
+    <strong id="agent-success-rate" class="agent-kpi-value">--</strong>
+    <span class="agent-kpi-subtitle">Measured Outcomes</span>
+  </div>
+
+</div>
+
+    <!-- LATEST ACTION -->
+    <div class="latest-agent-action">
+
+      <div class="latest-action-header">
+        <div>
+          <span class="agent-section-label">LATEST AGENT ACTION</span>
+          <h3>Operational Decision</h3>
+        </div>
+
+        <span id="latest-action-status" class="tag teal">
+          LOADING
+        </span>
+      </div>
+
+      <div id="latest-action-content">
+
+        <div class="empty-state">
+          <p>Loading agent decision intelligence...</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- RECENT AGENT DECISIONS -->
+<div class="recent-agent-decisions">
+
+  <div class="recent-decisions-header">
+    <div>
+      <span class="agent-section-label">DECISION HISTORY</span>
+      <h3>Recent Agent Decisions</h3>
+    </div>
+
+    <span class="tag teal">LIVE</span>
+  </div>
+
+  <div id="recent-decisions-list">
+
+    <div class="empty-state">
+      <p>Loading recent autonomous decisions...</p>
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+  </div>
+
+</section>
+    
+<div id="risk-page" class="page-section">
+
+    <!-- ROW 1: KPI CARDS -->
+    <div class="kpi-row">
+      <div class="kpi-card kpi-critical">
+        <div class="kpi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Overall Risk Score</div>
+          <div class="kpi-val" id="kv-risk">74</div>
+          <div class="kpi-sub trend-up" id="kv-risk-level">Critical Risk</div>
+        </div>
+        <svg class="kpi-ring" viewBox="0 0 36 36"><path class="ring-bg" d="M18 2.08a15.92 15.92 0 010 31.84A15.92 15.92 0 0118 2.08"/><path id="risk-ring" class="ring-fill-crit" stroke-dasharray="74 100" d="M18 2.08a15.92 15.92 0 010 31.84A15.92 15.92 0 0118 2.08"/></svg>
+      </div>
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h6l6 18h6"/><path d="M14 9h7"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Highest Risk Corridor</div>
+          <div class="kpi-val kpi-sm" id="kv-corridor">Strait of Hormuz</div>
+          <div class="kpi-sub">Risk Index: <strong id="kv-corridor-risk">88/100</strong></div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-info">
+        <div class="kpi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Active Geopolitical Events</div>
+          <div class="kpi-val" id="kv-events">23</div>
+          <div class="kpi-sub trend-up" id="kv-events-status">Active Events</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-success">
+        <div class="kpi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">AI Confidence Level</div>
+          <div class="kpi-val" id="kv-conf">91%</div>
+          <div class="kpi-sub" id="kv-verification">Verification status</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-alert">
+        <div class="kpi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Active Alerts</div>
+          <div class="kpi-val" id="kv-alerts">17</div>
+          <div class="kpi-sub"><span class="badge-crit">5 Critical</span> <span class="badge-warn">8 High</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: MAP + NEWS -->
+    <div class="grid-2col">
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>Global Risk Heatmap</span>
+          <div class="hdr-ctrls">
+            <button class="ctrl-btn active" onclick="toggleMapLayer(this,'routes')">Routes</button>
+            <button class="ctrl-btn" onclick="toggleMapLayer(this,'ports')">Ports</button>
+            <button class="ctrl-btn" onclick="toggleMapLayer(this,'tankers')">Tankers</button>
+          </div>
+        </div>
+        <div id="world-map"></div>
+        <div class="map-legend">
+          <span class="leg"><span class="ld red"></span>Disrupted</span>
+          <span class="leg"><span class="ld orange"></span>High Risk</span>
+          <span class="leg"><span class="ld green"></span>Safe</span>
+          <span class="leg"><span class="ld blue"></span>Tanker</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14H10M15 18h-5M10 6h8v4h-8V6z"/></svg>Live News Intelligence</span>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+        </div>
+        <div class="news-feed" id="news-feed"></div>
+      </div>
+    </div>
+
+    <!-- ROW 3: AI ANALYSIS + RISK GAUGE + XAI -->
+    <div class="grid-3col">
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>AI Analysis</span>
+          <span class="tag teal">Event Detail</span>
+        </div>
+        <div id="ai-analysis-body" class="ai-analysis-body">
+          <div class="empty-state"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1e4a6e" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><p>Select a news article<br/>to view AI analysis</p></div>
+        </div>
+      </div>
+      <div class="panel risk-score-panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Dynamic Risk Score</span>
+        </div>
+        <div class="gauge-wrap">
+          <canvas id="risk-gauge" width="220" height="130"></canvas>
+          <div class="gauge-overlay">
+            <div class="gauge-num" id="gauge-num">74</div>
+            <div class="gauge-lbl critical-txt" id="gauge-lbl">HIGH</div>
+          </div>
+        </div>
+        <div class="risk-meta-row">
+          <div class="rm"><span class="rm-l">Confidence</span><span class="rm-v teal-txt" id="gauge-confidence">91%</span></div>
+          <div class="rm-div"></div>
+          <div class="rm"><span class="rm-l">Status</span><span class="rm-v critical-txt" id="gauge-status">Active</span></div>
+          <div class="rm-div"></div>
+          <div class="rm"><span class="rm-l">Calc</span><span class="rm-v" id="rm-calc">--</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/></svg>Explainable AI</span>
+          <span class="tag orange">Why this score?</span>
+        </div>
+        <div id="xai-factors"></div>
+      </div>
+    </div>
+
+    <!-- ROW 4: HISTORICAL + KNOWLEDGE GRAPH -->
+    <div class="grid-2col">
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>Historical Comparison</span>
+          <span class="tag blue">Pattern Match</span>
+        </div>
+        <div id="hist-events"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Knowledge Graph</span>
+          <span class="tag purple">Interactive</span>
+        </div>
+        <div id="knowledge-graph" class="kg-container"></div>
+      </div>
+    </div>
+
+    <!-- ROW 5: CHARTS + ALERTS -->
+    <div class="grid-2col">
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Risk Trend Analytics</span>
+          <div class="hdr-ctrls">
+            <button class="ctrl-btn active" onclick="switchChart('risk',this)">Risk Score</button>
+            <button class="ctrl-btn" onclick="switchChart('oil',this)">Oil vs Risk</button>
+            <button class="ctrl-btn" onclick="switchChart('events',this)">Events</button>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="trend-chart"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="panel-hdr">
+          <span class="panel-title"><svg class="ph-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Real-Time Alerts</span>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+        </div>
+        <div id="alerts-list" class="alerts-list"></div>
+      </div>
+    </div>
+
+        <!-- ROW 6: AI RECOMMENDATIONS -->
+    <div class="panel">
+      <div class="panel-hdr">
+        <span class="panel-title">AI Recommendations</span>
+        <span class="tag teal">Agent Generated</span>
+      </div>
+      <div id="recommendations-list"></div>
+    </div>
+
+  </div>
+<!-- DIGITAL TWIN PAGE -->
+<section id="digital-twin-page" class="page-section hidden-page">
+
+  <div class="panel">
+    <div class="panel-hdr">
+      <span class="panel-title">Digital Twin — Supply Chain Simulation</span>
+      <span class="tag teal">LIVE MODEL</span>
+    </div>
+
+    <div id="digital-twin-content">
+      <div class="empty-state">
+        <p>Loading Digital Twin data...</p>
+      </div>
+    </div>
+    <div id="refineries-section" class="refineries-section">
+  <div class="refineries-header">
+    <div>
+      <h3>Refinery Network</h3>
+      <p>Live refinery capacity, utilization and operational risk</p>
+    </div>
+
+    <span class="tag teal">LIVE INFRASTRUCTURE</span>
+  </div>
+
+  <div id="refineries-list" class="refineries-list">
+    <div class="empty-state">
+      <p>Loading refinery network...</p>
+    </div>
+  </div>
+</div>
+  </div>
+
+</section>
+
+<!-- SCENARIO SIMULATOR PAGE -->
+<section id="scenario-simulator-page" class="page-section hidden-page">
+
+  <div class="panel">
+    <div class="panel-hdr">
+      <span class="panel-title">Scenario Simulator</span>
+      <span class="tag purple">WHAT-IF ANALYSIS</span>
+    </div>
+
+    <div class="simulator-content">
+
+      <div class="simulator-config">
+
+        <div class="simulator-field">
+          <label for="scenario-select">Select Scenario</label>
+          <select id="scenario-select">
+            <option value="">Loading scenarios...</option>
+          </select>
+        </div>
+
+        <div id="scenario-details" class="scenario-details">
+          <p>Select a scenario to view its configuration.</p>
+        </div>
+
+        <button id="run-simulation-btn" class="simulator-run-btn">
+          Run Simulation
+        </button>
+
+      </div>
+
+      <div id="simulation-results" class="simulation-results">
+        <div class="empty-state">
+          <p>Run a scenario to view simulation results.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- PROCUREMENT PAGE -->
+<section id="procurement-page" class="page-section hidden-page">
+
+  <div class="panel">
+
+    <div class="panel-hdr">
+      <span class="panel-title">Procurement Intelligence</span>
+      <span class="tag blue">SUPPLIER ANALYTICS</span>
+    </div>
+
+    <div id="procurement-content">
+
+      <div class="empty-state">
+        <p>Loading procurement data...</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- STRATEGIC RESERVE PAGE -->
+<section id="strategic-reserve-page" class="page-section hidden-page">
+
+  <div class="panel">
+
+    <div class="panel-hdr">
+      <span class="panel-title">Strategic Reserve</span>
+      <span class="tag green">ENERGY SECURITY</span>
+    </div>
+
+    <div id="strategic-reserve-content">
+
+      <div class="empty-state">
+        <p>Loading strategic reserve data...</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- REPORTS PAGE -->
+<section id="reports-page" class="page-section hidden-page">
+
+  <div class="panel">
+
+    <div class="panel-hdr">
+      <span class="panel-title">Executive Intelligence Report</span>
+      <span class="tag blue">AI GENERATED</span>
+    </div>
+
+    <div id="reports-content">
+
+      <div class="empty-state">
+        <p>Loading executive risk report...</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SETTINGS PAGE -->
+<section id="settings-page" class="page-section hidden-page">
+
+  <div class="panel">
+
+    <div class="panel-hdr">
+      <span class="panel-title">Platform Settings</span>
+      <span class="tag teal">SYSTEM CONFIGURATION</span>
+    </div>
+
+    <div id="settings-content">
+
+      <div class="empty-state">
+        <p>Loading platform configuration...</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

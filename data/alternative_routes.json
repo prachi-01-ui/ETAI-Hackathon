@@ -1,0 +1,40 @@
+{
+  "alternative_routes": [
+    {
+      "id": 1,
+      "route_name": "Cape of Good Hope Route",
+      "origin": "Ras Tanura Port",
+      "destination": "Mundra Port",
+      "transit_days": 24,
+      "additional_delay_days": 12,
+      "estimated_cost": 750000,
+      "risk_level": "Low",
+      "capacity_percentage": 80,
+      "availability": "Available"
+    },
+    {
+      "id": 2,
+      "route_name": "UAE Fujairah Alternative Route",
+      "origin": "Fujairah Port",
+      "destination": "Mundra Port",
+      "transit_days": 10,
+      "additional_delay_days": 2,
+      "estimated_cost": 550000,
+      "risk_level": "Medium",
+      "capacity_percentage": 70,
+      "availability": "Available"
+    },
+    {
+      "id": 3,
+      "route_name": "Strategic Reserve Supply Route",
+      "origin": "Indian Strategic Petroleum Reserve",
+      "destination": "Indian Energy Refinery",
+      "transit_days": 2,
+      "additional_delay_days": 0,
+      "estimated_cost": 300000,
+      "risk_level": "Low",
+      "capacity_percentage": 60,
+      "availability": "Emergency Only"
+    }
+  ]
+}

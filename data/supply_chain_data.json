@@ -1,0 +1,70 @@
+{
+  "suppliers": [
+    {
+      "id": 1,
+      "name": "Middle East Crude Supplier",
+      "country": "Saudi Arabia",
+      "commodity": "Crude Oil",
+      "daily_capacity_barrels": 1500000,
+      "reliability_score": 88
+    },
+    {
+      "id": 2,
+      "name": "UAE Energy Supplier",
+      "country": "United Arab Emirates",
+      "commodity": "Crude Oil",
+      "daily_capacity_barrels": 1200000,
+      "reliability_score": 91
+    }
+  ],
+
+  "ports": [
+    {
+      "id": 1,
+      "name": "Ras Tanura Port",
+      "country": "Saudi Arabia",
+      "port_type": "Origin"
+    },
+    {
+      "id": 2,
+      "name": "Mundra Port",
+      "country": "India",
+      "port_type": "Destination"
+    }
+  ],
+
+  "shipping_routes": [
+    {
+      "id": 1,
+      "name": "Strait of Hormuz Route",
+      "origin_port": "Ras Tanura Port",
+      "destination_port": "Mundra Port",
+      "risk_level": "Critical",
+      "transit_days": 12,
+      "status": "At Risk"
+    }
+  ],
+
+  "refineries": [
+    {
+      "id": 1,
+      "name": "Indian Energy Refinery",
+      "country": "India",
+      "daily_requirement_barrels": 800000,
+      "current_inventory_days": 14
+    }
+  ],
+
+  "risk_events": [
+    {
+      "id": 1,
+      "title": "Strait of Hormuz Supply Disruption",
+      "risk_type": "Geopolitical",
+      "affected_route": "Strait of Hormuz Route",
+      "probability": 0.85,
+      "impact": "Critical",
+      "risk_score": 85,
+      "status": "Active"
+    }
+  ]
+}

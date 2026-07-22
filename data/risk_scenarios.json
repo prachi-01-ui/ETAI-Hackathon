@@ -1,0 +1,40 @@
+{
+  "scenarios": [
+    {
+      "id": 1,
+      "scenario_name": "Strait of Hormuz Closure",
+      "risk_type": "Geopolitical",
+      "affected_asset": "Strait of Hormuz Route",
+      "probability": 0.85,
+      "severity": "Critical",
+      "estimated_delay_days": 14,
+      "estimated_supply_loss_percentage": 45,
+      "estimated_financial_impact": 5000000,
+      "recommended_strategy": "Activate Alternative Supply Route"
+    },
+    {
+      "id": 2,
+      "scenario_name": "Major Port Congestion",
+      "risk_type": "Operational",
+      "affected_asset": "Mundra Port",
+      "probability": 0.60,
+      "severity": "High",
+      "estimated_delay_days": 7,
+      "estimated_supply_loss_percentage": 25,
+      "estimated_financial_impact": 2500000,
+      "recommended_strategy": "Redirect Shipment to Alternative Port"
+    },
+    {
+      "id": 3,
+      "scenario_name": "Supplier Production Disruption",
+      "risk_type": "Supply",
+      "affected_asset": "Middle East Crude Supplier",
+      "probability": 0.55,
+      "severity": "High",
+      "estimated_delay_days": 10,
+      "estimated_supply_loss_percentage": 30,
+      "estimated_financial_impact": 3200000,
+      "recommended_strategy": "Activate Backup Supplier"
+    }
+  ]
+}
