@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://etai-hackathon.onrender.com";
 
 /* ===== DATA ===== */
 let NEWS = [
@@ -4274,8 +4274,8 @@ async function fetchAgentActionCenter() {
   try {
 
    const [decisionsResponse, outcomesResponse] = await Promise.all([
-  fetch("http://127.0.0.1:8000/decisions/"),
-  fetch("http://127.0.0.1:8000/outcomes/")
+  fetch("https://etai-hackathon.onrender.com/decisions/"),
+  fetch("https://etai-hackathon.onrender.com/outcomes/")
 ]);
 
     if (!decisionsResponse.ok || !outcomesResponse.ok) {
@@ -4344,7 +4344,7 @@ let linkedRecommendation = null;
 if (latestDecision && latestDecision.recommendation_id) {
   try {
     const recommendationResponse = await fetch(
-      `http://127.0.0.1:8000/recommendations/${latestDecision.recommendation_id}`
+      `https://etai-hackathon.onrender.com/recommendations/${latestDecision.recommendation_id}`
     );
 
     if (recommendationResponse.ok) {
@@ -4376,7 +4376,7 @@ if (recentDecisionsContainer) {
             if (decision.recommendation_id) {
                 try {
                     const response = await fetch(
-                        `http://127.0.0.1:8000/recommendations/${decision.recommendation_id}`
+                        `https://etai-hackathon.onrender.com/recommendations/${decision.recommendation_id}`
                     );
 
                     if (response.ok) {
@@ -4628,7 +4628,7 @@ document.getElementById("latest-action-content").innerHTML = `
 async function executeDecision(decisionId) {
     try {
         const response = await fetch(
-            `http://127.0.0.1:8000/decisions/${decisionId}/execute`,
+            `https://etai-hackathon.onrender.com/decisions/${decisionId}/execute`,
             {
                 method: "PUT"
             }
@@ -4669,7 +4669,7 @@ async function fetchGeminiRecommendation(
 
   try {
 
-    const response = await fetch("http://127.0.0.1:8000/gemini/recommendation", {
+    const response = await fetch("https://etai-hackathon.onrender.com/gemini/recommendation", {
 
       method: "POST",
 
