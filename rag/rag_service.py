@@ -1,12 +1,16 @@
 import json
+import re
 from pathlib import Path
-
-import faiss
-import numpy as np
-from sentence_transformers import SentenceTransformer
+from collections import Counter
 
 
 class RAGService:
+    """
+    Lightweight RAG service designed for low-memory deployment.
+
+    Retrieves relevant knowledge documents using token-based
+    similarity and supplies them as grounding context to Gemini.
+    """
 
     def __init__(self):
         self.project_root = Path(__file__).resolve().parent.parent
@@ -17,22 +21,10 @@ class RAGService:
             self.project_root / "data" / "alternative_routes.json",
         ]
 
-        # Documents used by the vector database
         self.documents = []
-
-        # Text representation of each document
         self.document_texts = []
 
-        # Sentence Transformer embedding model
-        self.embedding_model = SentenceTransformer(
-            "all-MiniLM-L6-v2"
-        )
-
-        # FAISS vector index
-        self.index = None
-
         self.load_documents()
-        self.build_vector_index()
 
     # ============================================================
     # LOAD KNOWLEDGE DOCUMENTS
@@ -61,7 +53,6 @@ class RAGService:
 
             self.documents.append(document)
 
-            # Convert JSON knowledge into text for embedding
             document_text = json.dumps(
                 data,
                 ensure_ascii=False,
@@ -72,36 +63,48 @@ class RAGService:
         return self.documents
 
     # ============================================================
-    # BUILD FAISS VECTOR INDEX
+    # TOKENIZE TEXT
     # ============================================================
 
-    def build_vector_index(self):
+    def _tokenize(self, text):
 
-        if not self.document_texts:
-            self.index = None
-            return
-
-        embeddings = self.embedding_model.encode(
-            self.document_texts,
-            convert_to_numpy=True,
+        return re.findall(
+            r"\b[a-zA-Z0-9]+\b",
+            text.lower(),
         )
-
-        embeddings = np.asarray(
-            embeddings,
-            dtype="float32",
-        )
-
-        # Normalize vectors so inner product acts as cosine similarity
-        faiss.normalize_L2(embeddings)
-
-        dimension = embeddings.shape[1]
-
-        self.index = faiss.IndexFlatIP(dimension)
-
-        self.index.add(embeddings)
 
     # ============================================================
-    # SEMANTIC RETRIEVAL
+    # CALCULATE DOCUMENT RELEVANCE
+    # ============================================================
+
+    def _calculate_score(
+        self,
+        query,
+        document_text,
+    ):
+
+        query_tokens = Counter(
+            self._tokenize(query)
+        )
+
+        document_tokens = Counter(
+            self._tokenize(document_text)
+        )
+
+        score = 0
+
+        for token, count in query_tokens.items():
+
+            if token in document_tokens:
+                score += min(
+                    count,
+                    document_tokens[token],
+                )
+
+        return float(score)
+
+    # ============================================================
+    # RETRIEVE RELEVANT KNOWLEDGE
     # ============================================================
 
     def retrieve(
@@ -110,50 +113,35 @@ class RAGService:
         top_k: int = 3,
     ):
 
-        if self.index is None:
+        if not self.documents:
             return []
 
-        query_embedding = self.embedding_model.encode(
-            [query],
-            convert_to_numpy=True,
-        )
+        scored_documents = []
 
-        query_embedding = np.asarray(
-            query_embedding,
-            dtype="float32",
-        )
-
-        faiss.normalize_L2(query_embedding)
-
-        number_of_results = min(
-            top_k,
-            len(self.documents),
-        )
-
-        scores, indices = self.index.search(
-            query_embedding,
-            number_of_results,
-        )
-
-        results = []
-
-        for score, index in zip(
-            scores[0],
-            indices[0],
+        for document, document_text in zip(
+            self.documents,
+            self.document_texts,
         ):
 
-            if index == -1:
-                continue
+            score = self._calculate_score(
+                query,
+                document_text,
+            )
 
-            document = self.documents[index]
+            scored_documents.append(
+                {
+                    "source": document["source"],
+                    "score": score,
+                    "content": document["content"],
+                }
+            )
 
-            results.append({
-                "source": document["source"],
-                "score": float(score),
-                "content": document["content"],
-            })
+        scored_documents.sort(
+            key=lambda item: item["score"],
+            reverse=True,
+        )
 
-        return results
+        return scored_documents[:top_k]
 
 
 rag_service = RAGService()
